@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+import io
+import csv
 
 # 加载环境变量
 load_dotenv()
@@ -320,6 +322,75 @@ def change_password(current_user):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': '密码修改失败'}), 500
+
+@app.route('/api/records/export', methods=['GET'])
+@token_required
+def export_records(current_user):
+    try:
+        records = Record.query.filter_by(user_id=current_user.id).all()
+        
+        # 创建CSV数据
+        output = io.StringIO()
+        writer = csv.writer(output)
+        
+        # 写入表头
+        writer.writerow(['开始时间', '结束时间', '持续时间(秒)'])
+        
+        # 写入数据
+        for record in records:
+            writer.writerow([
+                record.start_time,
+                record.end_time,
+                record.duration
+            ])
+        
+        # 准备响应
+        output.seek(0)
+        return app.response_class(output.getvalue(), mimetype='text/csv',
+                                  headers={
+                                      'Content-Disposition': f'attachment; filename=timer_records_{datetime.now().strftime("%Y%m%d")}.csv'
+                                  })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/records/import', methods=['POST'])
+@token_required
+def import_records(current_user):
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': '没有文件'}), 400
+            
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': '没有选择文件'}), 400
+            
+        if not file.filename.endswith('.csv'):
+            return jsonify({'error': '只支持CSV文件'}), 400
+            
+        # 读取CSV文件
+        stream = io.StringIO(file.stream.read().decode("UTF8"), newline=None)
+        csv_reader = csv.reader(stream)
+        
+        # 跳过表头
+        next(csv_reader)
+        
+        # 导入数据
+        for row in csv_reader:
+            start_time, end_time, duration = row
+            record = Record(
+                user_id=current_user.id,
+                start_time=start_time,
+                end_time=end_time,
+                duration=int(duration)
+            )
+            db.session.add(record)
+            
+        db.session.commit()
+        return jsonify({'message': '导入成功'}), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
