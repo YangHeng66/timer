@@ -1,0 +1,21 @@
+.history {
+  padding: 16px 0;
+}
+
+.history-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.adm-list-item {
+  background: white;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.adm-list-item-content-main {
+  padding: 12px 0;
+}

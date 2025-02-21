@@ -1,0 +1,42 @@
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  flex: 1;
+}
+
+.timer-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timer-display {
+  font-size: 48px;
+  font-weight: bold;
+  font-family: monospace;
+  margin: 20px 0;
+  color: #333;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.control-button {
+  min-width: 120px;
+  height: 48px;
+  border-radius: 24px;
+  font-size: 18px;
+}
+.subtitle{
+  color: #ef91e8;
+}

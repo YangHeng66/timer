@@ -1,46 +1,113 @@
-# Getting Started with Create React App
+# 专注计时器应用
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个简洁优雅的专注计时器应用，帮助你记录和分析时间使用情况。
 
-## Available Scripts
+## 功能特点
 
-In the project directory, you can run:
+- ⏱️ 精确计时：支持毫秒级精确计时
+- 📊 数据统计：自动统计使用时长和频率
+- 📝 历史记录：查看和管理所有计时记录
+- 💾 本地存储：支持离线使用，数据不会丢失
+- 🌐 后端同步：可选的数据同步功能
 
-### `npm start`
+## 技术栈
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 前端
+- React
+- TypeScript
+- Ant Design Mobile
+- React Router
+- LocalForage
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 后端
+- Flask
+- SQLAlchemy
+- SQLite
+- Flask-CORS
 
-### `npm test`
+## 快速开始
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 环境要求
+- Node.js >= 14
+- Python >= 3.8
+- npm 或 yarn
 
-### `npm run build`
+### 安装步骤
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. 克隆项目
+```bash
+git clone <项目地址>
+cd timer
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. 安装前端依赖
+```bash
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. 安装后端依赖
+```bash
+cd backend
+pip install -r requirements.txt
+```
 
-### `npm run eject`
+### 运行应用
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. 启动后端服务
+```bash
+cd backend
+python app.py
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. 启动前端开发服务器
+```bash
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+应用将在 http://localhost:3000 启动
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 项目结构
 
-## Learn More
+```
+timer/
+├── src/                    # 前端源代码
+│   ├── components/        # React 组件
+│   ├── utils/            # 工具函数
+│   └── styles/           # 样式文件
+├── backend/              # 后端源代码
+│   ├── app.py           # Flask 应用
+│   └── requirements.txt  # Python 依赖
+└── public/              # 静态资源
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 开发指南
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 前端开发
+- 组件位于 `src/components`
+- 全局样式在 `src/styles/global.css`
+- API 请求和存储逻辑在 `src/utils`
+
+### 后端开发
+- API 端点定义在 `backend/app.py`
+- 数据库模型使用 SQLAlchemy
+- 支持 CORS 跨域请求
+
+## 部署说明
+
+1. 构建前端
+```bash
+npm run build
+```
+
+2. 配置后端
+- 设置环境变量
+- 配置数据库
+- 设置 CORS 策略
+
+## 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+## 许可证
+
+MIT License

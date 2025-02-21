@@ -1,26 +1,64 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation, Link } from 'react-router-dom';
+import { TabBar } from 'antd-mobile';
+import { ClockCircleOutline, HistogramOutline, UnorderedListOutline } from 'antd-mobile-icons';
+import Timer from './components/Timer';
+import History from './components/History';
+import Stats from './components/Stats';
+import './styles/global.css';
 
-function App() {
+// 导航组件
+const Navigation = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const tabs = [
+    {
+      key: '/',
+      title: '计时',
+      icon: <ClockCircleOutline />,
+    },
+    {
+      key: '/history',
+      title: '历史',
+      icon: <UnorderedListOutline />,
+    },
+    {
+      key: '/stats',
+      title: '统计',
+      icon: <HistogramOutline />,
+    },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TabBar activeKey={location.pathname} onChange={value => navigate(value)}>
+      {tabs.map(tab => (
+        <TabBar.Item
+          key={tab.key}
+          icon={tab.icon}
+          title={tab.title}
+        />
+      ))}
+    </TabBar>
   );
-}
+};
+
+// 主应用组件
+const App: React.FC = () => {
+  return (
+    <Router>
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<Timer />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/stats" element={<Stats />} />
+        </Routes>
+        <div className="bottom-nav">
+          <Navigation />
+        </div>
+      </div>
+    </Router>
+  );
+};
 
 export default App;
