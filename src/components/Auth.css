@@ -1,0 +1,73 @@
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 24px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.auth-switch span {
+    color: #1677ff;
+    cursor: pointer;
+}
+
+.auth-switch span:hover {
+    text-decoration: underline;
+}
+
+.eye-button {
+    padding: 4px;
+    cursor: pointer;
+    color: #999;
+}
+
+.eye-button:hover {
+    color: #666;
+}
+
+:root:root {
+    --adm-color-primary: #1677ff;
+}
+
+.adm-form {
+    --adm-font-size-main: 16px;
+}
+
+.adm-button {
+    margin-top: 16px;
+}
+
+.adm-form-item-label {
+    font-size: 16px;
+    color: #333;
+}
+
+.adm-input {
+    font-size: 16px;
+}
+
+.adm-toast {
+    --adm-font-size-main: 16px;
+}

@@ -1,0 +1,28 @@
+.profile-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.profile-header h2 {
+  margin: 0;
+}
+
+.form-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.profile-actions {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}

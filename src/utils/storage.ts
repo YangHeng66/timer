@@ -1,4 +1,5 @@
 import localforage from 'localforage';
+import { getToken } from './auth';
 
 interface Record {
   id: string;
@@ -8,15 +9,21 @@ interface Record {
 }
 
 const STORAGE_KEY = 'timer_records';
-const API_BASE_URL = 'http://localhost:5000';  // 后端服务端口
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';  // 后端服务端口
 const USER_ID = 'default';
 
 // API 请求配置
-const fetchConfig = {
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  credentials: 'include' as RequestCredentials
+const getRequestConfig = (method: string = 'GET', body?: any) => {
+  const token = getToken();
+  return {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    credentials: 'include' as RequestCredentials,
+    ...(body ? { body: JSON.stringify(body) } : {})
+  };
 };
 
 // 初始化 localforage
@@ -28,7 +35,7 @@ localforage.config({
 // 检查 API 是否可用
 const checkApiAvailability = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/stats?user_id=${USER_ID}`, fetchConfig);
+    const response = await fetch(`${API_BASE_URL}/stats?user_id=${USER_ID}`, getRequestConfig());
     return response.ok;
   } catch (error) {
     console.error('API 连接失败:', error);
@@ -51,14 +58,10 @@ export const saveRecord = async (record: Omit<Record, 'id'>) => {
     // 检查 API 可用性并同步到服务器
     if (await checkApiAvailability()) {
       try {
-        const response = await fetch(`${API_BASE_URL}/records`, {
-          method: 'POST',
-          ...fetchConfig,
-          body: JSON.stringify({
-            ...record,
-            user_id: USER_ID,
-          }),
-        });
+        const response = await fetch(`${API_BASE_URL}/records`, getRequestConfig('POST', {
+          ...record,
+          user_id: USER_ID,
+        }));
         
         if (!response.ok) {
           console.warn('同步记录到服务器失败:', await response.text());
@@ -81,7 +84,7 @@ export const getRecords = async (): Promise<Record[]> => {
     // 检查 API 可用性
     if (await checkApiAvailability()) {
       try {
-        const response = await fetch(`${API_BASE_URL}/records?user_id=${USER_ID}`, fetchConfig);
+        const response = await fetch(`${API_BASE_URL}/records?user_id=${USER_ID}`, getRequestConfig());
         if (response.ok) {
           const serverRecords = await response.json();
           await localforage.setItem(STORAGE_KEY, serverRecords);
@@ -114,10 +117,7 @@ export const deleteRecord = async (id: string) => {
     // 检查 API 可用性并从服务器删除
     if (await checkApiAvailability()) {
       try {
-        const response = await fetch(`${API_BASE_URL}/records/${id}?user_id=${USER_ID}`, {
-          method: 'DELETE',
-          ...fetchConfig
-        });
+        const response = await fetch(`${API_BASE_URL}/records/${id}?user_id=${USER_ID}`, getRequestConfig('DELETE'));
         
         if (!response.ok) {
           console.warn('从服务器删除记录失败:', await response.text());
@@ -138,7 +138,7 @@ export const getStats = async () => {
     // 检查 API 可用性
     if (await checkApiAvailability()) {
       try {
-        const response = await fetch(`${API_BASE_URL}/stats?user_id=${USER_ID}`, fetchConfig);
+        const response = await fetch(`${API_BASE_URL}/stats?user_id=${USER_ID}`, getRequestConfig());
         if (response.ok) {
           return await response.json();
         } else {
